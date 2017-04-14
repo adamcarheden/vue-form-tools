@@ -1,30 +1,83 @@
-# vue-form-tools
+# VUE Form Tools
 
 > html-form-tools for Vue
 
-## Build Setup
+[VUE](https://vuejs.org/) Form Tools implement VUE components that for the inputs in [HTML Form Tools](https://github.com/adamcarheden/html-form-tools).
 
+## Live Demo
+*Comming Soon*
+
+## Install
 ``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-
-# run unit tests
-npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
+npm install vue-form-tools --save
+```
+or
+``` bash
+git clone https://github.com/adamcarheden/vue-form-tools.git
 ```
 
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+## Use
+```
+<template>
+	<div>
+		<!-- Some inputs with predefined limits and formatting -->
+		<vft-integer-input v-model:myObject.int />
+		<vft-float-input   v-model:myObject.float />
+		<vft-dollar-input  v-model:myObject.dollar />
+
+		<!-- A fully customizable input -->
+		<vft-input v-model=myObject.alpha :validate=alphaOnly />
+	<div>
+</template>
+<script>
+import { vftIntegerInput, vftFloatInput, vftDollarInput, vftInput } from 'vue-form-tools'
+
+var myObject = {
+	int: 1,
+	float: 1.0,
+	dollar: 100,
+	alpha: 'abc',
+}
+
+export default {
+	name: 'my-component',
+	components: {
+		vftIntegerInput,
+		vftFloatInput,
+		vftDollarInput,
+		vftInput,
+	},
+	data() {
+		return {
+			myObject: myObject,
+			alphaOnly: function(value) {
+				if (value.match(/[^A-Za-z]/)) throw new Error('non-alpha chars now allowed')
+				return true
+			}
+		}
+	},
+}	
+</script>
+```
+
+## API
+
+VUE Form Tools is a complete interface to [HTML Form Tools](https://github.com/adamcarheden/html-form-tools). All callbacks become VUE props. Options are the 'opts' prop.
+
+VUE Form Tools implements VUE's [v-model interface](https://vuejs.org/v2/guide/components.html#Form-Input-Components-using-Custom-Events). The model will be automatically updated *only* when the input contains a valid value.
+
+
+## Contribute
+``` bash
+git clone https://github.com/adamcarheden/vue-form-tools.git
+cd vue-form-tools
+npm install
+# Start the development server
+npm run dev
+# Build the release
+npm run release
+```
+Everything important is in src/html-form-tools.js.
+
+PRs welcome.
+

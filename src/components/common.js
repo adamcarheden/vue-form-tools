@@ -6,6 +6,9 @@ let propsSpec = {
 		type: Boolean,
 		default: true,
 	},
+	value: {
+		default: '',
+	},
 	// html-form-tools callbacks
 	unformat: {
 		validator: valCB,
@@ -41,29 +44,29 @@ let propsSpec = {
 		default: function() { return {} }
 	}
 }
-let onMounted = function(hftFun, tgt, vueCmpInst, skipCallbacks = []) {
-	let onValid = vueCmpInst.valid
-	if (vueCmpInst.syncOnValid) {
-		if (vueCmpInst.valid) {
+let onMounted = function(hftFun, tgt, vueComponentInstance, skipCallbacks = []) {
+	let onValid = vueComponentInstance.valid
+	if (vueComponentInstance.syncOnValid) {
+		if (vueComponentInstance.valid) {
 			onValid = (value) => { 
-				vueCmpInst.valid(value)
-				vueCmpInst.$emit('input', value)
+				vueComponentInstance.valid(value)
+				vueComponentInstance.$emit('input', value)
 			}
 		} else {
 			onValid = (value) => { 
-				vueCmpInst.$emit('input', value)
+				vueComponentInstance.$emit('input', value)
 			}
 		}
 	}
 	let callbacks = {}
-	if (skipCallbacks.indexOf('unformat') < 0) callbacks.unformat = vueCmpInst.unformat
-	if (skipCallbacks.indexOf('validate') < 0) callbacks.validate = vueCmpInst.validate
-	if (skipCallbacks.indexOf('format') < 0) callbacks.format = vueCmpInst.format
-	if (skipCallbacks.indexOf('sync') < 0) callbacks.sync = vueCmpInst.sync
-	if (skipCallbacks.indexOf('invalid') < 0) callbacks.invalid = vueCmpInst.invalid
-	if (skipCallbacks.indexOf('intermediate') < 0) callbacks.intermediate = vueCmpInst.intermediate
+	if (skipCallbacks.indexOf('unformat') < 0) callbacks.unformat = vueComponentInstance.unformat
+	if (skipCallbacks.indexOf('validate') < 0) callbacks.validate = vueComponentInstance.validate
+	if (skipCallbacks.indexOf('format') < 0) callbacks.format = vueComponentInstance.format
+	if (skipCallbacks.indexOf('sync') < 0) callbacks.sync = vueComponentInstance.sync
+	if (skipCallbacks.indexOf('invalid') < 0) callbacks.invalid = vueComponentInstance.invalid
+	if (skipCallbacks.indexOf('intermediate') < 0) callbacks.intermediate = vueComponentInstance.intermediate
 	if (skipCallbacks.indexOf('valid') < 0) callbacks.valid = onValid
-	hftFun(tgt, callbacks, vueCmpInst.opts)
+	hftFun(tgt, callbacks, vueComponentInstance.opts)
 	console.log({hftFun: hftFun})
 }
 export {

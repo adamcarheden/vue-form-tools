@@ -1,5 +1,7 @@
 <template>
-	<input ref='input'/>
+	<div>
+		<input ref='input' :value=value />
+	</div>
 </template>
 
 <script>
