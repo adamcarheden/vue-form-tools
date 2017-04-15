@@ -5,7 +5,7 @@
 VUE Form Tools implement [VUE](https://vuejs.org/) components for the inputs in [HTML Form Tools](https://github.com/adamcarheden/html-form-tools).
 
 ## Live Demo
-*Comming Soon*
+[Live demo](https://jsfiddle.net/adamcarheden/ufqx56ww/)
 
 ## Install
 ``` bash
