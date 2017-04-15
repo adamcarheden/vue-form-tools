@@ -66,10 +66,32 @@ let onMounted = function(hftFun, tgt, vueComponentInstance, skipCallbacks = []) 
 	if (skipCallbacks.indexOf('invalid') < 0) callbacks.invalid = vueComponentInstance.invalid
 	if (skipCallbacks.indexOf('intermediate') < 0) callbacks.intermediate = vueComponentInstance.intermediate
 	if (skipCallbacks.indexOf('valid') < 0) callbacks.valid = onValid
-	hftFun(tgt, callbacks, vueComponentInstance.opts)
-	console.log({hftFun: hftFun})
+	let hftObj = hftFun(tgt, callbacks, vueComponentInstance.opts)
+	hftObj.set(vueComponentInstance.$props.value)
+	vueComponentInstance.hftObj = hftObj
+	return hftObj
+}
+let methods = function() {
+	return {
+		update: function(value) { this.hftObj.set(value) }
+	}
+}
+let watch = function() {
+	return {
+		value: function(val, oldVal) { 
+			this.hftObj.set(val) 
+		}
+	}
+}
+let data = function() {
+	return {
+		hftObj: null
+	}
 }
 export {
 	onMounted,
-	propsSpec
+	propsSpec,
+	methods,
+	watch,
+	data,
 }

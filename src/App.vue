@@ -2,27 +2,35 @@
 	<div id="app">
 		<table style='margin-left: auto; margin-right: auto'>
 		<tr>
+			<th>&nbsp;</th>
+			<th>Form</th>
+			<th>Object value</th>
+		</tr>
+		<tr>
 			<td class='lbl'>Hey, wake up!</td>
-			<td><vft-input v-model="obj.noz" :validate=validate /><br/>(Just try to type the letter 'z', I dare you)</td>
+			<td><vft-input v-model="obj.noz" :validate=validate /><div>(Try to type the letter 'z')</div></td>
 			<td>{{obj.noz}}</td>
+			<td><button v-on:click='obj.noz = "abc"'>&larr; Set</button></td>
 		</tr>
 		<tr>
 			<td class='lbl'>Integer</td>
 			<td><vft-integer-input v-model="obj.whole"></vft-integer-input></td>
 			<td>{{obj.whole}}</td>
+			<td><button v-on:click='obj.whole = 12345'>&larr; Set</button></td>
 		</tr>
 		<tr>
 			<td class='lbl'>Float</td>
 			<td><vft-float-input v-model="obj.decimal"></vft-float-input></td>
 			<td>{{obj.decimal}}</td>
+			<td><button v-on:click='obj.decimal = 3.1415927'>&larr; Set</button></td>
 		</tr>
 		<tr>
 			<td class='lbl'>Dollar</td>
 			<td><vft-dollar-input v-model="obj.money"></vft-dollar-input></td>
 			<td>{{obj.money}}</td>
+			<td><button v-on:click='obj.money = 1000000'>&larr; Set</button></td>
 		</tr>
 		</table>
-		<button v-on:click='go'>Go</button>
 	</div>
 </template>
 
@@ -32,14 +40,11 @@ import vftIntegerInput from './components/vft-integer-input'
 import vftFloatInput from './components/vft-float-input'
 import vftDollarInput from './components/vft-dollar-input'
 
-let obj ={
+let obj = {
 	noz: 'wxy',
 	whole: 10,
 	decimal:0.5,
 	money: 50,
-}
-let go = () => {
-	obj.noz = 'abc'
 }
 export default {
 	name: 'app',
@@ -50,7 +55,6 @@ export default {
 				return true
 			},
 			obj: obj,
-			go: go,
 		}
 	},
 	components: {
@@ -69,6 +73,10 @@ export default {
 	-moz-osx-font-smoothing: grayscale;
 	color: #2c3e50;
 	margin-top: 60px;
+}
+td { text-align: center; }
+#button {
+	text-align:center;
 }
 .lbl {
 	text-align: right;
