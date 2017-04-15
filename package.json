@@ -2,8 +2,7 @@
   "name": "vue-form-tools",
   "version": "1.0.0",
   "description": "html-form-tools for Vue",
-  "author": "Adam Carheden <adam.carheden@gmail.com>",
-  "private": true,
+	"main": "vue-form-tools.js",
   "scripts": {
     "dev": "node build/dev-server.js",
     "start": "node build/dev-server.js",
@@ -14,6 +13,15 @@
     "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs",
     "release": "rm -f vue-form-tools.js &&  webpack --config ./build/webpack.release.js && babili vue-form-tools.js -o vue-form-tools.min.js"
   },
+  "author": {
+    "name": "Adam Carheden",
+    "email": "adam.carheden@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/adamcarheden/vue-form-tools"
+  },
+  "license": "GPL-3.0",
   "dependencies": {
     "vue": "^2.2.2"
   },
