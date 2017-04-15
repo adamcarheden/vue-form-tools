@@ -2,7 +2,7 @@
 
 > html-form-tools for Vue
 
-[VUE](https://vuejs.org/) Form Tools implement VUE components that for the inputs in [HTML Form Tools](https://github.com/adamcarheden/html-form-tools).
+VUE Form Tools implement [VUE](https://vuejs.org/) components for the inputs in [HTML Form Tools](https://github.com/adamcarheden/html-form-tools).
 
 ## Live Demo
 *Comming Soon*
@@ -77,7 +77,5 @@ npm run dev
 # Build the release
 npm run release
 ```
-Everything important is in src/html-form-tools.js.
-
 PRs welcome.
 
