@@ -9,7 +9,8 @@ function resolve (dir) {
 
 module.exports = {
   entry: {
-    app: './src/main.js'
+    app: './src/index.js',
+		'vue-form-tools': './src/vue-form-tools.js'
   },
   output: {
     path: config.build.assetsRoot,

@@ -8,7 +8,7 @@
 import HTMLFormTools from 'html-form-tools'
 import { onMounted, propsSpec, methods, watch, data } from './common'
 export default {
-	name: 'vft-input',
+	name: 'vft-managed-input',
 	props: propsSpec,
 	methods: methods(),
 	watch: watch(),

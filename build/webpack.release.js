@@ -3,7 +3,7 @@ const path = require('path')
 const projectRoot = path.resolve(__dirname, '../')
 
 module.exports = {
-  entry: './src/index.js',
+  entry: projectRoot+'/src/vue-form-tools.js',
   output: {
     path: projectRoot,
     filename: 'vue-form-tools.js',

@@ -80,68 +80,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-(function webpackUniversalModuleDefinition(root, factory) {
-	if(true)
-		module.exports = factory();
-	else if(typeof define === 'function' && define.amd)
-		define("html-form-tools", [], factory);
-	else if(typeof exports === 'object')
-		exports["html-form-tools"] = factory();
-	else
-		root["html-form-tools"] = factory();
-})(this, function() {
-return /******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId])
-/******/ 			return installedModules[moduleId].exports;
-
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			exports: {},
-/******/ 			id: moduleId,
-/******/ 			loaded: false
-/******/ 		};
-
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-
-/******/ 		// Flag the module as loaded
-/******/ 		module.loaded = true;
-
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-
-
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(0);
-/******/ })
-/************************************************************************/
-/******/ ([
-/* 0 */
-/***/ function(module, exports) {
-
-	const defaultCallbacks={unformat:!1,validate:!1,format:!1,sync:!1,invalid:!1,intermediate:!1,valid:!1},events={HTMLInputElement:{keypress:function(a){return this.debug(`keypress: value='${this.input.value}'`),!!this.ignoreKey(a)||void this.validateAndFormat(a)},input:function(a){this.debug(`input: value='${this.input.value}'`),this.validateAndFormat(a)},blur:function(){this.debug(`blur: value='${this.input.value}'`),this.sync()}}};var defaultOpts={defaultValue:null,ignoreCtrl:!0,ignoreAlt:!0,debug:!1},predictInput=function(a){if(!('key'in a))throw new Error(`predictInput called on event of type '${a.type}', which has no value 'key'. You probably only want to call this on KeyEvents`);var b=a.target.value.slice(0,a.target.selectionStart),c=a.target.value.slice(a.target.selectionEnd),d=`${b}${a.key}${c}`;return d};class ManagedInput{constructor(a,b,c){if('string'!=typeof a)this.input=a;else if(this.input=document.getElementById(a),!this.input&&(this.input=document.querySelector(a),!this.input))throw new Error(`Failed to find element by id or query selector '${a}'`);if('object'!=typeof this.input)throw Error(`Expected an object or the name of an element to manage, but got a '${typeof this.input}'`);if(!(this.input instanceof HTMLInputElement))throw Error(`Expected an HTMLInputElement, got a '${this.input.constructor.name}'`);if('format'in b&&!('unformat'in b)&&console.warn(`You defined the format callback but not the unformat callback. That probably won't work well.`),'unformat'in b&&!('format'in b)&&console.warn(`You defined the unformat callback but not the format callback. That probably won't work well.`),'format'in b||'unformat'in b||'validate'in b||console.warn(`You didn't define the format/unformat callbacks nor the validate callback. This module doesn't really do anything if you haven't defined at least one of those.`),this.callbacks={},'undefined'==typeof b&&(b={}),'object'!=typeof b)throw new Error(`callbacks should be an object, not a ${typeof b}`);if(Object.keys(defaultCallbacks).forEach(d=>{this.callbacks[d]=d in b?b[d]:defaultCallbacks[d]}),Object.keys(b).forEach(function(d){d in defaultCallbacks||console.warn(`Unknown callback: '${d}'`)}),this.opts={},'undefined'==typeof c&&(c={}),'object'!=typeof c)throw new Error(`opts should be an object, not a ${typeof c}`);Object.keys(defaultOpts).forEach(d=>{this.opts[d]=d in c?c[d]:defaultOpts[d]}),null!==this.opts.defaultValue&&(this.input.value=this.opts.defaultValue),this.validateAndFormat(),this.inputType=this.input.constructor.name,Object.keys(events[this.inputType]).forEach(d=>{this.input.addEventListener(d,f=>{events[this.inputType][d].bind(this)(f)})})}set(a){this.input.value=a,this.validateAndFormat()}unformat(a,b){return'undefined'==typeof a&&(a=this.input.value),this.callbacks.unformat?this.callbacks.unformat(a,b):a}unformatted(a){'undefined'==typeof a&&(a=this.input.value);var b=this.callbacks.unformat?this.callbacks.unformat(a):a;return'object'==typeof b?b.value:b}format(a,b){return this.callbacks.format?this.callbacks.format(a,b):a}validate(a){return'undefined'==typeof a&&(a=this.unformatted(this.input.value)),!this.callbacks.validate||this.callbacks.validate(a)}sync(a){'undefined'==typeof a&&(a=this.unformatted(this.input.value));try{if(this.callbacks.sync&&this.validate(a))return this.callbacks.sync(a)}catch(b){this.debug(`Refusing to sync invalid value ${a}`)}}invalid(a,b,c,d){this.callbacks.invalid&&this.callbacks.invalid(a,b,c,d)}intermediate(a,b,c,d){this.callbacks.intermediate&&this.callbacks.intermediate(a,b,c,d)}valid(a,b,c,d){this.callbacks.valid&&this.callbacks.valid(a,b,c,d)}ignoreKey(a){if(!('key'in a))throw new Error(`ignoreKey should only be called for KeyEvents. Called on event of type ${a.type}`);return(1<a.key.length||this.opts.ignoreCtrl&&a.ctrlKey||this.opts.ignoreAlt&&a.altKey)&&(this.debug({ignoring:a}),!0)}validateAndFormat(a){var b,c,d=this.input.selectionStart;a&&a.key?(b=this.input.value,c=predictInput(a),d++):c=this.input.value;var f=this.unformat(c,d);'object'!=typeof f&&(f={value:f,cursorPos:!1});try{if(!this.validate(f.value))this.debug(`'${f.value}': acceptable intermediate value, formatting delayed`),this.intermediate(f.value,b,c,this.input.value);else{var g=this.format(f.value,f.cursorPos);'object'!=typeof g&&(g={value:g,cursorPos:!1}),this.debug(`'${f.value}' (cursorPos=${f.cursorPos}) is valid, formatted as '${g.value}' (cursorPos=${g.cursorPos})`),a&&a.preventDefault(),this.input.value=g.value,g.cursorPos&&this.input.setSelectionRange(g.cursorPos,g.cursorPos),this.valid(f.value,b,c,this.input.value)}}catch(h){return this.debug(`Invalid value '${f.value}': "${h.message}". We'll prevent input if possible.`),a&&a.preventDefault(),a&&'keypress'===a.type||this.invalid(f.value,b,c,this.input.value),!1}return!0}debug(a){this.opts.debug&&console.log(a)}}const commafy=function(a,b){let c;switch(2>arguments.length&&(b=0),typeof a){case'number':c=a.toString();break;case'symbol':case'string':if(c=a.toString(),!c.match(/^\s*\d+(\.\d*)?\s*$/))return 2>arguments.length?a:{value:a,cursorPos:b};let j=c.substring(0,b),l=c.substring(b).trim();0===j.trim().length&&(b-=j.length,j=''),c=j+l;break;default:return 2>arguments.length?a:{value:a,cursorPos:b};}var d=c.match(/\./)?c.split(/\./,2):[c];for(var f=[],g=0,h=0;h<d[0].length;h++){let j=d[0].length-h-1;0!==h&&0==h%3&&(f.unshift(','),j<b&&g++),f.unshift(d[0].charAt(j))}return b+=g,d[0]=f.join(''),c=d.join('.'),2>arguments.length?c:{value:c,cursorPos:b}},uncommafy=function(a,b){var c=a.replace(/,/g,'');return 2<=arguments.length?(b-=a.substring(0,b).replace(/[^,]/g,'').length,{value:c,cursorPos:b}):c},mergeCallbacks=function(a,b,c,d=[]){return Object.keys(a).forEach(function(f){if(-1!==d.indexOf(f))f in b||(b[f]=a[f]);else{if(f in b)throw new Error(`You defined the callback '${f}', but '${c}' also defines that callback`);b[f]=a[f]}}),b},IntegerInput=function(a,b={},c={}){let d=JSON.parse(JSON.stringify(c));'commafy'in d||(d.commafy=!0);var f=!1;'MaxDigits'in d&&(f=d.MaxDigits,delete d.MaxDigits);var g=!1,h=!1;return d.commafy?(g=stackFormats(b,'format',function(j,l){return commafy(j,l)}),h=stackFormats(b,'unformat',function(j,l){return uncommafy(j,l)})):('format'in b&&(g=b.format),'unformat'in b&&(h=b.unformat)),delete d.commafy,new ManagedInput(a,mergeCallbacks(b,{validate:function(j){if(!j.match(/^[0-9]*$/))throw new Error('must be a integer');if(f&&j.length>f)throw new Error(`Must be at most ${f} digits`);return!0},format:g,unformat:h},'IntegerInput'),d)},FloatInput=function(a,b={},c={}){let d=JSON.parse(JSON.stringify(c));'commafy'in d||(d.commafy=!0);var f=!1;'MaxMantissaDigits'in d&&(f=d.MaxMantissaDigits,delete d.MaxMantissaDigits);var g=!1;'MaxDecimalDigits'in d&&(g=d.MaxDecimalDigits,delete d.MaxDecimalDigits);var h=!1,j=!1;return d.commafy?(h=stackFormats(b,'format',function(l,m){return commafy(l,m)}),j=stackFormats(b,'unformat',function(l,m){return uncommafy(l,m)})):('format'in b&&(h=b.format),'unformat'in b&&(j=b.unformat)),delete d.commafy,new ManagedInput(a,mergeCallbacks(b,{validate:function(l){if(l=l.toString(),0===l.length)return!1;var m=l.match(/^(\d*)((\.)(\d*))?$/);if(!m)throw new Error('Must be numeric (with out without a decimal)');if(f&&m[1]&&m[1].length>f)throw new Error(`Mantissa part must be no more than '${f}' digits`);if(g&&m[4]&&m[4].length>g)throw new Error(`Decimal part must be no more than '${g}' digits`);return m[3]&&!m[4]?!1:!0},format:h,unformat:j},'FloatInput',['format','unformat']),d)},stackFormats=function(a,b,c){let d;return d=b in a&&'function'==typeof a[b]?function(f,g){var h=c(f,g);return a[b](h.value,h.cursorPos)}:c,d},DollarInput=function(a,b={},c={}){let d=JSON.parse(JSON.stringify(c));return'MaxDecimalDigits'in d||(d.MaxDecimalDigits=2),FloatInput(a,mergeCallbacks(b,{unformat:function(f,g){f=f.toString();var h=f.replace(/^\$+/,''),j=g,l=f.length-h.length;return j-=Math.min(g,l),{value:h,cursorPos:j}},format:function(f,g){return{value:'$'+f,cursorPos:!1!==g&&g+1}}},'DollarInput'),d)};module.exports={ManagedInput:function(a,b,c){return new ManagedInput(a,b,c)},IntegerInput:IntegerInput,FloatInput:FloatInput,DollarInput:DollarInput,util:{commafy:commafy,uncommafy:uncommafy}};
-
-/***/ }
-/******/ ])
-});
-;
+(function(b,c){ true?module.exports=c():'function'==typeof define&&define.amd?define('html-form-tools',[],c):'object'==typeof exports?exports['html-form-tools']=c():b['html-form-tools']=c()})(this,function(){return function(a){function b(d){if(c[d])return c[d].exports;var f=c[d]={i:d,l:!1,exports:{}};return a[d].call(f.exports,f,f.exports,b),f.l=!0,f.exports}var c={};return b.m=a,b.c=c,b.i=function(d){return d},b.d=function(d,f,g){b.o(d,f)||Object.defineProperty(d,f,{configurable:!1,enumerable:!0,get:g})},b.n=function(d){var f=d&&d.__esModule?function(){return d['default']}:function(){return d};return b.d(f,'a',f),f},b.o=function(d,f){return Object.prototype.hasOwnProperty.call(d,f)},b.p='',b(b.s=5)}([function(a,b){'use strict';b.a=function(j,l){let m;switch(2>arguments.length&&(l=0),typeof j){case'number':m=j.toString();break;case'symbol':case'string':if(m=j.toString(),!m.match(/^\s*\d+(\.\d*)?\s*$/))return 2>arguments.length?j:{value:j,cursorPos:l};let r=m.substring(0,l),s=m.substring(l).trim();0===r.trim().length&&(l-=r.length,r=''),m=r+s;break;default:return 2>arguments.length?j:{value:j,cursorPos:l};}var n=m.match(/\./)?m.split(/\./,2):[m];for(var o=[],p=0,q=0;q<n[0].length;q++){let r=n[0].length-q-1;0!==q&&0==q%3&&(o.unshift(','),r<l&&p++),o.unshift(n[0].charAt(r))}return l+=p,n[0]=o.join(''),m=n.join('.'),2>arguments.length?m:{value:m,cursorPos:l}};b.b=function(j,l){var m=j.replace(/,/g,'');return 2<=arguments.length?(l-=j.substring(0,l).replace(/[^,]/g,'').length,{value:m,cursorPos:l}):m};b.c=function(j,l,m,n=[]){return Object.keys(j).forEach(function(o){if(-1!==n.indexOf(o))o in l||(l[o]=j[o]);else{if(o in l)throw new Error(`You defined the callback '${o}', but '${m}' also defines that callback`);l[o]=j[o]}}),l};b.d=function(j,l,m){let n;return n=l in j&&'function'==typeof j[l]?function(o,p){var q=m(o,p);return j[l](q.value,q.cursorPos)}:m,n}},function(a,b){'use strict';const d={unformat:!1,validate:!1,format:!1,sync:!1,invalid:!1,intermediate:!1,valid:!1},f={HTMLInputElement:{keypress:function(l){return this.debug(`keypress: value='${this.input.value}'`),!!this.ignoreKey(l)||void this.validateAndFormat(l)},input:function(l){this.debug(`input: value='${this.input.value}'`),this.validateAndFormat(l)},blur:function(){this.debug(`blur: value='${this.input.value}'`),this.sync()}}};var g={defaultValue:null,ignoreCtrl:!0,ignoreAlt:!0,debug:!1},h=function(l){if(!('key'in l))throw new Error(`predictInput called on event of type '${l.type}', which has no value 'key'. You probably only want to call this on KeyEvents`);var m=l.target.value.slice(0,l.target.selectionStart),n=l.target.value.slice(l.target.selectionEnd),o=`${m}${l.key}${n}`;return o};b.a=class{constructor(l,m,n){if('string'!=typeof l)this.input=l;else if(this.input=document.getElementById(l),!this.input&&(this.input=document.querySelector(l),!this.input))throw new Error(`Failed to find element by id or query selector '${l}'`);if('object'!=typeof this.input)throw Error(`Expected an object or the name of an element to manage, but got a '${typeof this.input}'`);if(!(this.input instanceof HTMLInputElement))throw Error(`Expected an HTMLInputElement, got a '${this.input.constructor.name}'`);if('format'in m&&!('unformat'in m)&&console.warn(`You defined the format callback but not the unformat callback. That probably won't work well.`),'unformat'in m&&!('format'in m)&&console.warn(`You defined the unformat callback but not the format callback. That probably won't work well.`),'format'in m||'unformat'in m||'validate'in m||console.warn(`You didn't define the format/unformat callbacks nor the validate callback. This module doesn't really do anything if you haven't defined at least one of those.`),this.callbacks={},'undefined'==typeof m&&(m={}),'object'!=typeof m)throw new Error(`callbacks should be an object, not a ${typeof m}`);if(Object.keys(d).forEach((o)=>{this.callbacks[o]=o in m?m[o]:d[o]}),Object.keys(m).forEach(function(o){o in d||console.warn(`Unknown callback: '${o}'`)}),this.opts={},'undefined'==typeof n&&(n={}),'object'!=typeof n)throw new Error(`opts should be an object, not a ${typeof n}`);Object.keys(g).forEach((o)=>{this.opts[o]=o in n?n[o]:g[o]}),null!==this.opts.defaultValue&&(this.input.value=this.opts.defaultValue),this.validateAndFormat(),this.inputType=this.input.constructor.name,Object.keys(f[this.inputType]).forEach((o)=>{this.input.addEventListener(o,(p)=>{f[this.inputType][o].bind(this)(p)})})}set(l){this.input.value=l,this.validateAndFormat()}unformat(l,m){return'undefined'==typeof l&&(l=this.input.value),this.callbacks.unformat?this.callbacks.unformat(l,m):l}unformatted(l){'undefined'==typeof l&&(l=this.input.value);var m=this.callbacks.unformat?this.callbacks.unformat(l):l;return'object'==typeof m?m.value:m}format(l,m){return this.callbacks.format?this.callbacks.format(l,m):l}validate(l){return'undefined'==typeof l&&(l=this.unformatted(this.input.value)),!this.callbacks.validate||this.callbacks.validate(l)}sync(l){'undefined'==typeof l&&(l=this.unformatted(this.input.value));try{if(this.callbacks.sync&&this.validate(l))return this.callbacks.sync(l)}catch(m){this.debug(`Refusing to sync invalid value ${l}`)}}invalid(l,m,n){this.callbacks.invalid&&this.callbacks.invalid(l,m,n,this.input)}intermediate(l,m,n){this.callbacks.intermediate&&this.callbacks.intermediate(l,m,n,this.input)}valid(l,m,n){this.callbacks.valid&&this.callbacks.valid(l,m,n,this.input)}ignoreKey(l){if(!('key'in l))throw new Error(`ignoreKey should only be called for KeyEvents. Called on event of type ${l.type}`);return(1<l.key.length||this.opts.ignoreCtrl&&l.ctrlKey||this.opts.ignoreAlt&&l.altKey)&&(this.debug({ignoring:l}),!0)}validateAndFormat(l){var m='',n,o=this.input.selectionStart;l&&l.key?(m=this.input.value,n=h(l),o++):n=this.input.value;var p=this.unformat(n,o);'object'!=typeof p&&(p={value:p,cursorPos:!1});try{if(!this.validate(p.value))this.debug(`'${p.value}': acceptable intermediate value, formatting delayed`),this.intermediate(p.value,m,n);else{var q=this.format(p.value,p.cursorPos);'object'!=typeof q&&(q={value:q,cursorPos:!1}),this.debug(`'${p.value}' (cursorPos=${p.cursorPos}) is valid, formatted as '${q.value}' (cursorPos=${q.cursorPos})`),l&&l.preventDefault(),this.input.value=q.value,q.cursorPos&&this.input.setSelectionRange(q.cursorPos,q.cursorPos),this.valid(p.value,m,n)}}catch(r){return this.debug(`Invalid value '${p.value}': "${r.message}". We'll prevent input if possible.`),l&&l.preventDefault(),l&&'keypress'===l.type||this.invalid(p.value,m,n),!1}return!0}debug(l){this.opts.debug&&console.log(l)}}},function(a,b,c){'use strict';var d=c(0),f=c(1);b.a=function(g,h={},j={}){let l=JSON.parse(JSON.stringify(j));'commafy'in l||(l.commafy=!0);var m=!1;'MaxMantissaDigits'in l&&(m=l.MaxMantissaDigits,delete l.MaxMantissaDigits);var n=!1;'MaxDecimalDigits'in l&&(n=l.MaxDecimalDigits,delete l.MaxDecimalDigits);var o=!1,p=!1;return l.commafy?(o=c.i(d.d)(h,'format',function(q,r){return c.i(d.a)(q,r)}),p=c.i(d.d)(h,'unformat',function(q,r){return c.i(d.b)(q,r)})):('format'in h&&(o=h.format),'unformat'in h&&(p=h.unformat)),delete l.commafy,new f.a(g,c.i(d.c)(h,{validate:function(q){if(q=q.toString(),0===q.length)return!1;var r=q.match(/^(\d*)((\.)(\d*))?$/);if(!r)throw new Error('Must be numeric (with out without a decimal)');if(m&&r[1]&&r[1].length>m)throw new Error(`Mantissa part must be no more than '${m}' digits`);if(n&&r[4]&&r[4].length>n)throw new Error(`Decimal part must be no more than '${n}' digits`);return r[3]&&!r[4]?!1:!0},format:o,unformat:p},'FloatInput',['format','unformat']),l)}},function(a,b,c){'use strict';var d=c(0),f=c(2);b.a=function(g,h={},j={}){let l=JSON.parse(JSON.stringify(j));return'MaxDecimalDigits'in l||(l.MaxDecimalDigits=2),c.i(f.a)(g,c.i(d.c)(h,{unformat:function(m,n){m=m.toString();var o=m.replace(/^\$+/,''),p=n,q=m.length-o.length;return p-=Math.min(n,q),{value:o,cursorPos:p}},format:function(m,n){return{value:'$'+m,cursorPos:!1!==n&&n+1}}},'DollarInput'),l)}},function(a,b,c){'use strict';var d=c(0),f=c(1);b.a=function(g,h={},j={}){let l=JSON.parse(JSON.stringify(j));'commafy'in l||(l.commafy=!0);var m=!1;'MaxDigits'in l&&(m=l.MaxDigits,delete l.MaxDigits);var n=!1,o=!1;return l.commafy?(n=c.i(d.d)(h,'format',function(p,q){return c.i(d.a)(p,q)}),o=c.i(d.d)(h,'unformat',function(p,q){return c.i(d.b)(p,q)})):('format'in h&&(n=h.format),'unformat'in h&&(o=h.unformat)),delete l.commafy,new f.a(g,c.i(d.c)(h,{validate:function(p){if(!p.match(/^[0-9]*$/))throw new Error('must be a integer');if(m&&p.length>m)throw new Error(`Must be at most ${m} digits`);return!0},format:n,unformat:o},'IntegerInput'),l)}},function(a,b,c){'use strict';Object.defineProperty(b,'__esModule',{value:!0});var d=c(0),f=c(1),g=c(4),h=c(2),j=c(3);b['default']={ManagedInput:function(l,m,n){return new f.a(l,m,n)},IntegerInput:g.a,FloatInput:h.a,DollarInput:j.a,util:{commafy:d.a,uncommafy:d.b}}}])});
 
 /***/ }),
 /* 1 */
@@ -157,12 +96,12 @@ var valCB = function valCB(value) {
 	return value === false || typeof value === 'function';
 };
 var propsSpec = {
+	value: {
+		default: ''
+	},
 	syncOnValid: {
 		type: Boolean,
 		default: true
-	},
-	value: {
-		default: ''
 	},
 
 	unformat: {
@@ -206,16 +145,20 @@ var onMounted = function onMounted(hftFun, tgt, vueComponentInstance) {
 
 	var onValid = vueComponentInstance.valid;
 	if (vueComponentInstance.syncOnValid) {
+		var doSync = void 0;
 		if (vueComponentInstance.valid) {
-			onValid = function onValid(value) {
+			doSync = function doSync(value) {
 				vueComponentInstance.valid(value);
-				vueComponentInstance.$emit('input', value);
 			};
 		} else {
-			onValid = function onValid(value) {
-				vueComponentInstance.$emit('input', value);
+			doSync = function doSync(value) {
+				return;
 			};
 		}
+		onValid = function onValid(value) {
+			doSync(value);
+			vueComponentInstance.$emit('input', value);
+		};
 	}
 	var callbacks = {};
 	if (skipCallbacks.indexOf('unformat') < 0) callbacks.unformat = vueComponentInstance.unformat;
@@ -380,47 +323,9 @@ module.exports = Component.exports
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
-
-/* styles */
-__webpack_require__(18)
-
 var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(9),
-  /* template */
-  __webpack_require__(16),
-  /* scopeId */
-  "data-v-4c9e90ea",
-  /* cssModules */
-  null
-)
-Component.options.__file = "/storage/raid/onsite/offsite/home/acarheden/src/vue/components/vue-form-tools/src/components/vft-input.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] vft-input.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-4c9e90ea", Component.options)
-  } else {
-    hotAPI.reload("data-v-4c9e90ea", Component.options)
-  }
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var Component = __webpack_require__(2)(
-  /* script */
-  __webpack_require__(10),
   /* template */
   __webpack_require__(15),
   /* scopeId */
@@ -442,6 +347,44 @@ if (false) {(function () {
     hotAPI.createRecord("data-v-48b8ecbc", Component.options)
   } else {
     hotAPI.reload("data-v-48b8ecbc", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+/* styles */
+__webpack_require__(18)
+
+var Component = __webpack_require__(2)(
+  /* script */
+  __webpack_require__(10),
+  /* template */
+  __webpack_require__(16),
+  /* scopeId */
+  "data-v-4fdab5dd",
+  /* cssModules */
+  null
+)
+Component.options.__file = "/storage/raid/onsite/offsite/home/acarheden/src/vue/components/vue-form-tools/src/components/vft-managed-input.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] vft-managed-input.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-4fdab5dd", Component.options)
+  } else {
+    hotAPI.reload("data-v-4fdab5dd", Component.options)
   }
 })()}
 
@@ -511,13 +454,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-	name: 'vft-input',
+	name: 'vft-integer-input',
 	props: __WEBPACK_IMPORTED_MODULE_1__common__["a" /* propsSpec */],
 	methods: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common__["b" /* methods */])(),
 	watch: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common__["c" /* watch */])(),
 	data: __WEBPACK_IMPORTED_MODULE_1__common__["d" /* data */],
 	mounted: function mounted() {
-		__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common__["e" /* onMounted */])(__WEBPACK_IMPORTED_MODULE_0_html_form_tools___default.a.ManagedInput, this.$refs.input, this);
+		__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common__["e" /* onMounted */])(__WEBPACK_IMPORTED_MODULE_0_html_form_tools___default.a.IntegerInput, this.$refs.input, this, ['format', 'validate', 'unformat']);
 	}
 });
 
@@ -535,13 +478,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-	name: 'vft-integer-input',
+	name: 'vft-input',
 	props: __WEBPACK_IMPORTED_MODULE_1__common__["a" /* propsSpec */],
 	methods: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common__["b" /* methods */])(),
 	watch: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common__["c" /* watch */])(),
 	data: __WEBPACK_IMPORTED_MODULE_1__common__["d" /* data */],
 	mounted: function mounted() {
-		__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common__["e" /* onMounted */])(__WEBPACK_IMPORTED_MODULE_0_html_form_tools___default.a.IntegerInput, this.$refs.input, this, ['format', 'validate', 'unformat']);
+		__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common__["e" /* onMounted */])(__WEBPACK_IMPORTED_MODULE_0_html_form_tools___default.a.ManagedInput, this.$refs.input, this);
 	}
 });
 
@@ -555,13 +498,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_vft_dollar_input_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_vft_dollar_input_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_vft_float_input__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_vft_float_input___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_vft_float_input__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_vft_input_vue__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_vft_input_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_vft_input_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_vft_integer_input_vue__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_vft_managed_input_vue__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_vft_managed_input_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_vft_managed_input_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_vft_integer_input_vue__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_vft_integer_input_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_vft_integer_input_vue__);
 /* harmony reexport (default from non-hamory) */ __webpack_require__.d(__webpack_exports__, "vftDollarInput", function() { return __WEBPACK_IMPORTED_MODULE_0__components_vft_dollar_input_vue___default.a; });
 /* harmony reexport (default from non-hamory) */ __webpack_require__.d(__webpack_exports__, "vftFloatInput", function() { return __WEBPACK_IMPORTED_MODULE_1__components_vft_float_input___default.a; });
-/* harmony reexport (default from non-hamory) */ __webpack_require__.d(__webpack_exports__, "vftInput", function() { return __WEBPACK_IMPORTED_MODULE_2__components_vft_input_vue___default.a; });
+/* harmony reexport (default from non-hamory) */ __webpack_require__.d(__webpack_exports__, "vftManagedInput", function() { return __WEBPACK_IMPORTED_MODULE_2__components_vft_managed_input_vue___default.a; });
 /* harmony reexport (default from non-hamory) */ __webpack_require__.d(__webpack_exports__, "vftIntegerInput", function() { return __WEBPACK_IMPORTED_MODULE_3__components_vft_integer_input_vue___default.a; });
 
 
@@ -687,7 +630,7 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-4c9e90ea", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-4fdab5dd", module.exports)
   }
 }
 
@@ -719,13 +662,13 @@ var content = __webpack_require__(12);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(19)("39c8060b", content, false);
+var update = __webpack_require__(19)("6b07164d", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-4c9e90ea\",\"scoped\":true,\"hasInlineConfig\":false}!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./vft-input.vue", function() {
-     var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-4c9e90ea\",\"scoped\":true,\"hasInlineConfig\":false}!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./vft-input.vue");
+   module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-4fdab5dd\",\"scoped\":true,\"hasInlineConfig\":false}!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./vft-managed-input.vue", function() {
+     var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-4fdab5dd\",\"scoped\":true,\"hasInlineConfig\":false}!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./vft-managed-input.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
