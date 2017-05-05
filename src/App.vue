@@ -8,14 +8,10 @@
 		</tr>
 		<tr>
 			<td class='lbl'>Hey, wake up!</td>
-			<td><vft-managed-input ref='noz' v-model="obj.noz" :validate=validate @valid=valid @invalid=invalid :opts='{debug: true}' /><div>(Try to type the letter 'z')</div></td>
-<!--
-			<td><vft-managed-input ref='noz' v-bind:class="{ valid: isValid.noz, invalid: !isValid.noz }" v-model="obj.noz" @validate=validate @valid=valid @invalid=invalid :opts='{debug: true}' /><div>(Try to type the letter 'z')</div></td>
--->
+			<td><vft-managed-input id='noz' ref='noz' v-model="obj.noz" :validate=validate @valid=valid @invalid=invalid :opts='{debug: true}' /><div>(Try to type the letter 'z')</div></td>
 			<td>{{obj.noz}}</td>
 			<td><button v-on:click='obj.noz = "abc"'>&larr; Set</button></td>
 		</tr>
-<!--
 		<tr>
 			<td class='lbl'>Integer</td>
 			<td><vft-integer-input v-model="obj.whole"></vft-integer-input></td>
@@ -34,7 +30,6 @@
 			<td>{{obj.money}}</td>
 			<td><button v-on:click='obj.money = 1000000'>&larr; Set</button></td>
 		</tr>
--->
 		</table>
 	</div>
 </template>

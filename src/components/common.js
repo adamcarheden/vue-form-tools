@@ -3,7 +3,7 @@ let propsSpec = {
 	// This makes us work with v-model as described here:
 	// https://vuejs.org/v2/guide/components.html#Form-Input-Components-using-Custom-Events
 	value: {
-		default: '',
+		default: false
 	},
 	syncOnValid: {
 		type: Boolean,
@@ -48,7 +48,7 @@ let onMounted = function(hftFun, tgt, vueComponentInstance) {
 		},
 	}
 	let hftObj = hftFun(tgt, callbacks, vueComponentInstance.opts)
-	hftObj.set(vueComponentInstance.$props.value)
+	if (vueComponentInstance.$props.value) hftObj.set(vueComponentInstance.$props.value)
 	vueComponentInstance.hftObj = hftObj
 	return hftObj
 }
@@ -60,7 +60,6 @@ let methods = function() {
 let watch = function() {
 	return {
 		value: function(val, oldVal) { 
-			console.log(`vue updating value`)
 			this.hftObj.set(val) 
 		}
 	}
