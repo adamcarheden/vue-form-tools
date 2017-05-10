@@ -28,7 +28,7 @@ let propsSpec = {
 		default: false
 	},
 }
-let onMounted = function(hftFun, tgt, vueComponentInstance) {
+let onMounted = function(hftFun, tgt, vueComponentInstance, skipCallbacks = []) {
 	let callbacks = {
 		unformat: vueComponentInstance.unformat,
 		validate:  vueComponentInstance.validate,
@@ -46,6 +46,9 @@ let onMounted = function(hftFun, tgt, vueComponentInstance) {
 			if (vueComponentInstance.syncOnValid) vueComponentInstance.$emit('input', newVal)
 			return vueComponentInstance.$emit('valid', unfmtd, oldVal, newVal, input) 
 		},
+	}
+	for (let cb of skipCallbacks) {
+		delete callbacks[cb]
 	}
 	let hftObj = hftFun(tgt, callbacks, vueComponentInstance.opts)
 	if (vueComponentInstance.$props.value) hftObj.set(vueComponentInstance.$props.value)
